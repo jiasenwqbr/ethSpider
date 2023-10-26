@@ -3,16 +3,19 @@ package chain
 import (
 	"context"
 	"encoding/hex"
+	"fmt"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*TransactionMeta, error) {
 	txList := make([]*TransactionMeta, 0)
+	fmt.Println()
 	for i := 0; i < txs.Len(); i++ {
 		ctx := context.Background()
 		// transaction对象
 		tx := txs[i]
+
 		chainId := tx.ChainId()
 		logsList := make([]*LogMeta, 0)
 
@@ -45,9 +48,14 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 
 			logsList = append(logsList, &logObj)
 		}
-
+		fmt.Println(msg.To())
+		to := ""
+		if msg.To() != nil {
+			to = msg.To().String()
+		}
 		messageObj := MessageMeta{
-			To:         msg.To().String(),
+			//To:         msg.To().String(),
+			To:         to,
 			From:       msg.From().String(),
 			Nonce:      msg.Nonce(),
 			Amount:     msg.Value().String(),
@@ -75,9 +83,10 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 		}
 
 		txObj := TransactionMeta{
-			Nonce:      tx.Nonce(),
-			Value:      tx.Value().String(),
-			To:         tx.To().String(),
+			Nonce: tx.Nonce(),
+			Value: tx.Value().String(),
+			//To:         tx.To().String(),
+			To:         to,
 			AccessList: tx.AccessList(),
 			Type:       tx.Type(),
 			Hash:       tx.Hash().String(),

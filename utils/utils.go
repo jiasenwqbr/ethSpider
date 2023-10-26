@@ -119,3 +119,5 @@ func StrToCommonAddress(addr string) common.Address {
 
 	return common.BytesToAddress(newAddr)
 }
+
+//func IfNeilToString()
