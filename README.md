@@ -1,4 +1,8 @@
 # Ethereum Block Field Summary
+## Core technologies and components
+golang 1.18
+## Run
+go run main.go node start
 ## Block layer
 ### data structure
 ```bash
