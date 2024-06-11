@@ -13,17 +13,20 @@ func (b *Spider) Sync() error {
 	client := b.Client
 	ctx := b.Ctx
 	logger := b.Logger
+	number := uint64(20067610)
 
 	for {
-		number, err := client.BlockNumber(ctx)
+		maxNumber, err := client.BlockNumber(ctx)
+		logger.Infof("the number is : %d", number, ",The currentBlock is : %d", currentBlock)
 		if err != nil {
 			logger.Errorf("Get latest block number error:%s", err)
 
 			return err
 		}
 
+		logger.Infof("the number is : %d", number, ",The currentBlock is : %d", currentBlock)
 		// 区块去重监测
-		if number == currentBlock {
+		if number >= maxNumber {
 			logger.Infof("Repeat block[%d], Nothing to do", number)
 
 			time.Sleep(conf.SYNC_SLEEP_DELAY_TIME)
@@ -32,7 +35,7 @@ func (b *Spider) Sync() error {
 		}
 
 		logger.Infof("Now block number:%d", number)
-
+		logger.Infof("Client:%v", client)
 		/*
 			解析区块数据
 		*/
@@ -57,8 +60,10 @@ func (b *Spider) Sync() error {
 		//}
 
 		// 记录已同步区块高度
-		currentBlock = number
+		//currentBlock = number
 		// 延迟同步
-		time.Sleep(conf.SYNC_SLEEP_DELAY_TIME)
+		// time.Sleep(conf.SYNC_ONE_SLEEP_DELAY_TIME)
+		number++
+		logger.Infof("number:%v", number)
 	}
 }

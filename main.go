@@ -14,12 +14,13 @@ const VERSION = "0.0.1"
 var log = logger.SetupLog("main-process")
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	num_cup := runtime.NumCPU()
+	log.Infof("Number of cpu is :%d", num_cup)
+	runtime.GOMAXPROCS(num_cup / 2)
 
 	c := []*cli.Command{
 		admin.AdminCmd,
 		node.NodeCmd,
-		
 	}
 
 	app := &cli.App{

@@ -29,31 +29,31 @@ type BlockMeta struct {
 	BaseFee      *big.Int           `json:"baseFee"`
 	Header       *types.Header      `json:"header"`
 	Body         *types.Body        `json:"body"`
-	Size         common.StorageSize `json:"size"`
+	Size         uint64             `json:"size"`
 	Hash         common.Hash        `json:"hash"`
 	ReceivedAt   time.Time          `json:"receivedAt"`
 	ReceivedFrom interface{}        `json:"receivedFrom"`
 }
 
 type TransactionMeta struct {
-	Nonce      uint64             `json:"nonce"`
-	Value      string             `json:"value"`
-	To         string             `json:"to"`
-	AccessList types.AccessList   `json:"accessList"`
-	Type       uint8              `json:"type"`
-	Hash       string             `json:"hash"`
-	Size       common.StorageSize `json:"size"`
-	Data       string             `json:"data"`
-	GasTipCap  string             `json:"gasTipCap"`
-	Gas        uint64             `json:"gas"`
-	GasFeeCap  string             `json:"gasFeeCap"`
-	GasPrice   string             `json:"gasPrice"`
-	ChainId    string             `json:"chainId"`
-	AsMessage  MessageMeta        `json:"asMessage"`
-	Cost       string             `json:"cost"`
-	Protected  bool               `json:"protected"`
-	Logs       []*LogMeta         `json:"logs"`
-	Receipt    ReceiptMeta        `json:"receipt"`
+	Nonce      uint64           `json:"nonce"`
+	Value      string           `json:"value"`
+	To         string           `json:"to"`
+	AccessList types.AccessList `json:"accessList"`
+	Type       uint8            `json:"type"`
+	Hash       string           `json:"hash"`
+	Size       uint64           `json:"size"`
+	Data       string           `json:"data"`
+	GasTipCap  string           `json:"gasTipCap"`
+	Gas        uint64           `json:"gas"`
+	GasFeeCap  string           `json:"gasFeeCap"`
+	GasPrice   string           `json:"gasPrice"`
+	ChainId    string           `json:"chainId"`
+	AsMessage  MessageMeta      `json:"asMessage"`
+	Cost       string           `json:"cost"`
+	Protected  bool             `json:"protected"`
+	Logs       []*LogMeta       `json:"logs"`
+	Receipt    ReceiptMeta      `json:"receipt"`
 }
 
 type ReceiptMeta struct {

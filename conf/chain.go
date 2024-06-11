@@ -3,6 +3,7 @@ package conf
 import "time"
 
 const SYNC_SLEEP_DELAY_TIME = 5 * time.Second
+const SYNC_ONE_SLEEP_DELAY_TIME = 1 * time.Second
 
 const DEFAULT_ETH_RPC = ""
 

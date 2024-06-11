@@ -3,26 +3,26 @@ package chain
 import (
 	"context"
 	"encoding/hex"
-	"fmt"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*TransactionMeta, error) {
 	txList := make([]*TransactionMeta, 0)
-	fmt.Println()
 	for i := 0; i < txs.Len(); i++ {
 		ctx := context.Background()
 		// transaction对象
 		tx := txs[i]
+		//log.Infof("tx is : %v\n", tx)
 
-		chainId := tx.ChainId()
+		//chainId := tx.ChainId()
 		logsList := make([]*LogMeta, 0)
 
-		msg, err := tx.AsMessage(types.LatestSignerForChainID(chainId), tx.GasPrice())
-		if err != nil {
-			log.Errorf("Extract data error %s\n", err.Error())
-		}
+		//msg, err := tx.AsMessage(types.LatestSignerForChainID(chainId), tx.GasPrice())
+
+		//if err != nil {
+		//	log.Errorf("Extract data error %s\n", err.Error())
+		//}
 
 		txReceipt, err := client.TransactionReceipt(ctx, tx.Hash())
 		if err != nil {
@@ -48,25 +48,25 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 
 			logsList = append(logsList, &logObj)
 		}
-		fmt.Println(msg.To())
-		to := ""
-		if msg.To() != nil {
-			to = msg.To().String()
-		}
-		messageObj := MessageMeta{
-			//To:         msg.To().String(),
-			To:         to,
-			From:       msg.From().String(),
-			Nonce:      msg.Nonce(),
-			Amount:     msg.Value().String(),
-			GasLimit:   msg.Gas(),
-			GasPrice:   msg.GasPrice().String(),
-			GasFeeCap:  msg.GasFeeCap().String(),
-			GasTipCap:  msg.GasTipCap().String(),
-			Data:       hex.EncodeToString(msg.Data()),
-			AccessList: msg.AccessList(),
-			IsFake:     msg.IsFake(),
-		}
+		//fmt.Println(msg.To())
+		//to := ""
+		//if msg.To() != nil {
+		//	to = msg.To().String()
+		//}
+		//messageObj := MessageMeta{
+		//	//To:         msg.To().String(),
+		//	To:         to,
+		//	From:       msg.From().String(),
+		//	Nonce:      msg.Nonce(),
+		//	Amount:     msg.Value().String(),
+		//	GasLimit:   msg.Gas(),
+		//	GasPrice:   msg.GasPrice().String(),
+		//	GasFeeCap:  msg.GasFeeCap().String(),
+		//	GasTipCap:  msg.GasTipCap().String(),
+		//	Data:       hex.EncodeToString(msg.Data()),
+		//	AccessList: msg.AccessList(),
+		//	IsFake:     msg.IsFake(),
+		//}
 
 		receiptObj := ReceiptMeta{
 			Type:              txReceipt.Type,
@@ -86,7 +86,7 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 			Nonce: tx.Nonce(),
 			Value: tx.Value().String(),
 			//To:         tx.To().String(),
-			To:         to,
+			//To:         to,
 			AccessList: tx.AccessList(),
 			Type:       tx.Type(),
 			Hash:       tx.Hash().String(),
@@ -97,11 +97,11 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 			GasFeeCap:  tx.GasFeeCap().String(),
 			GasPrice:   tx.GasPrice().String(),
 			ChainId:    tx.ChainId().String(),
-			AsMessage:  messageObj,
-			Cost:       tx.Cost().String(),
-			Protected:  tx.Protected(),
-			Logs:       logsList,
-			Receipt:    receiptObj,
+			//AsMessage:  messageObj,
+			Cost:      tx.Cost().String(),
+			Protected: tx.Protected(),
+			Logs:      logsList,
+			Receipt:   receiptObj,
 		}
 
 		txList = append(txList, &txObj)
