@@ -48,25 +48,34 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 
 			logsList = append(logsList, &logObj)
 		}
+
+		// 获取签名者对象
+		chainId := tx.ChainId()
+		signer := types.LatestSignerForChainID(chainId)
+
+		// 获取交易签名者
+		from, err := types.Sender(signer, tx)
+		if err != nil {
+			log.Fatal(err)
+		}
 		//fmt.Println(msg.To())
-		//to := ""
-		//if msg.To() != nil {
-		//	to = msg.To().String()
-		//}
-		//messageObj := MessageMeta{
-		//	//To:         msg.To().String(),
-		//	To:         to,
-		//	From:       msg.From().String(),
-		//	Nonce:      msg.Nonce(),
-		//	Amount:     msg.Value().String(),
-		//	GasLimit:   msg.Gas(),
-		//	GasPrice:   msg.GasPrice().String(),
-		//	GasFeeCap:  msg.GasFeeCap().String(),
-		//	GasTipCap:  msg.GasTipCap().String(),
-		//	Data:       hex.EncodeToString(msg.Data()),
-		//	AccessList: msg.AccessList(),
-		//	IsFake:     msg.IsFake(),
-		//}
+		to := ""
+		if tx.To() != nil {
+			to = tx.To().String()
+		}
+		messageObj := MessageMeta{
+			To:         to,
+			From:       from.Hex(),
+			Nonce:      tx.Nonce(),
+			Amount:     tx.Value().String(),
+			GasLimit:   tx.Gas(),
+			GasPrice:   tx.GasPrice().String(),
+			GasFeeCap:  tx.GasFeeCap().String(),
+			GasTipCap:  tx.GasTipCap().String(),
+			Data:       hex.EncodeToString(tx.Data()),
+			AccessList: tx.AccessList(),
+			// IsFake:     tx.IsFake(),
+		}
 
 		receiptObj := ReceiptMeta{
 			Type:              txReceipt.Type,
@@ -85,8 +94,8 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 		txObj := TransactionMeta{
 			Nonce: tx.Nonce(),
 			Value: tx.Value().String(),
-			//To:         tx.To().String(),
-			//To:         to,
+			//To:    tx.To(),
+			To:         to,
 			AccessList: tx.AccessList(),
 			Type:       tx.Type(),
 			Hash:       tx.Hash().String(),
@@ -97,12 +106,14 @@ func ParsingTransaction(txs types.Transactions, client *ethclient.Client) ([]*Tr
 			GasFeeCap:  tx.GasFeeCap().String(),
 			GasPrice:   tx.GasPrice().String(),
 			ChainId:    tx.ChainId().String(),
-			//AsMessage:  messageObj,
-			Cost:      tx.Cost().String(),
-			Protected: tx.Protected(),
-			Logs:      logsList,
-			Receipt:   receiptObj,
+			AsMessage:  messageObj,
+			Cost:       tx.Cost().String(),
+			Protected:  tx.Protected(),
+			Logs:       logsList,
+			Receipt:    receiptObj,
 		}
+
+		//log.Infof("tx.Data() is %s\n", hex.EncodeToString(tx.Data()))
 
 		txList = append(txList, &txObj)
 	}

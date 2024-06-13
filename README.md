@@ -1,6 +1,6 @@
 # Ethereum Block Field Summary
 ## Core technologies and components
-golang 1.18
+golang 1.22
 ## Run
 go run main.go node start
 ## Block layer

@@ -10,12 +10,12 @@ import (
 func ParsingBlock(ctx context.Context, client *ethclient.Client, blockHeight uint64) (map[*big.Int]BlockMeta, error) {
 	block, err := client.BlockByNumber(ctx, big.NewInt(int64(blockHeight)))
 
-	log.Infof("big.NewInt(int64(blockHeight)):%v", big.NewInt(int64(blockHeight)))
+	//log.Infof("big.NewInt(int64(blockHeight)):%v", big.NewInt(int64(blockHeight)))
 	if err != nil {
 		log.Errorf("----------%s\n", err.Error())
 		return nil, err
 	}
-	log.Infof("block.Transactions():%v", block.Transactions())
+	//log.Infof("block.Transactions():%v", block.Transactions())
 
 	txList, err := ParsingTransaction(block.Transactions(), client)
 	if err != nil {
